@@ -1,10 +1,11 @@
 package com.token.authenticate.service;
 
 import com.token.authenticate.domain.User;
+import com.token.authenticate.domain.dto.ReviewCreateRequest;
 import com.token.authenticate.domain.dto.UserJoinRequest;
 import com.token.authenticate.domain.dto.UserLoginRequest;
 import com.token.authenticate.repository.UserRepository;
-import com.token.authenticate.util.JwtTokenUtil;
+import com.token.authenticate.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
 
-    @Value("&{jwt.token.secret}")
+    @Value("${jwt.token.secret}")
     private String key;
 
     private long expireTimeMs = 1000 * 60 * 60L;
@@ -49,8 +50,14 @@ public class UserService {
             throw new RuntimeException("password 불일치");
         }
 
-        String token = JwtTokenUtil.CreateToken(userLoginRequest.getUserName(), key, expireTimeMs);
+        String token = JwtUtil.CreateToken(userLoginRequest.getUserName(), key, expireTimeMs);
         //토큰 발급
         return token;
+    }
+
+    public String createReview(ReviewCreateRequest reviewCreateRequest) {
+
+
+        return "리뷰 등록에 성공했습니다.";
     }
 }
